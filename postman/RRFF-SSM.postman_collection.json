@@ -1,0 +1,484 @@
+{
+  "info": {
+    "name": "RRFF-SSM API - Backend Inicial M05",
+    "description": "Importar, autenticar y ejecutar. Las escrituras permanecen 403 hasta aprobación y bandera writes-enabled=true. Usar SOLO datos de ensayo.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8097/api/v1"
+    },
+    {
+      "key": "username",
+      "value": "admin"
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "proyectoId",
+      "value": ""
+    },
+    {
+      "key": "rowVersion",
+      "value": "0"
+    },
+    {
+      "key": "convenioId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "01. Autenticación JWT",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if(pm.response.code===200){pm.collectionVariables.set('token',pm.response.json().accessToken);}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Perfil autenticado",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/me"
+      }
+    },
+    {
+      "name": "03. Módulos",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/catalogos/modulos"
+      }
+    },
+    {
+      "name": "04. Listar proyectos",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/proyectos?page=0&size=20"
+      }
+    },
+    {
+      "name": "05. Crear proyecto (habilitar escrituras en QA)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/proyectos",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"PRUEBA RRFF\",\n  \"codigoBip\": null,\n  \"comuna\": \"Punta Arenas\",\n  \"etapa\": null,\n  \"prioridad\": null,\n  \"fuenteReferencia\": \"DATOS DE ENSAYO\",\n  \"periodoFuente\": 2026\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if(pm.response.code===200){pm.collectionVariables.set('proyectoId',pm.response.json().id);pm.collectionVariables.set('rowVersion',pm.response.json().rowVersion);}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "06. Consultar proyecto",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/proyectos/{{proyectoId}}"
+      }
+    },
+    {
+      "name": "07. Rectificar proyecto (concurrencia)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/proyectos/{{proyectoId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"expectedRowVersion\": {{rowVersion}},\n  \"nombre\": \"PRUEBA RRFF - ACTUALIZADA\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "08. Registrar inversión (QA)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/inversiones",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"proyectoId\": \"{{proyectoId}}\",\n  \"periodo\": 2026,\n  \"fuente\": \"SIN VALIDAR\",\n  \"moneda\": \"CLP\",\n  \"monto\": 1000000\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "09. Registrar minuta versionada (QA)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/minutas",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"proyectoId\": \"{{proyectoId}}\",\n  \"fechaCorte\": \"2026-11-18\",\n  \"titulo\": \"Minuta de prueba\",\n  \"resumen\": \"Solo datos de ensayo\",\n  \"montoInformado\": null\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "10. Registrar Gantt versionada (QA)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/gantt",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"proyectoId\": \"{{proyectoId}}\",\n  \"nombre\": \"Prueba carta Gantt\",\n  \"fechaCorte\": \"2026-11-18\",\n  \"tareas\": [\n    {\n      \"denominacion\": \"Revisión\",\n      \"inicio\": \"2026-11-18\",\n      \"fin\": \"2026-11-25\",\n      \"avance\": null\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "11. Minutas por proyecto",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/minutas?ref={{proyectoId}}"
+      }
+    },
+    {
+      "name": "12. Gantt por proyecto",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/gantt?ref={{proyectoId}}"
+      }
+    },
+    {
+      "name": "13. Previsualización ejecutiva NO OFICIAL",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/reportabilidad/proyectos/{{proyectoId}}/vista-ejecutiva?fechaCorte=2026-11-18"
+      }
+    },
+    {
+      "name": "14. Convenios",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/convenios"
+      }
+    },
+    {
+      "name": "15. Crear convenio NO ACREDITADO (QA)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/convenios",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"CONVENIO DEMOSTRACIÓN\",\n  \"inicioPeriodo\": 2026,\n  \"finPeriodo\": 2030,\n  \"referenciaDocumento\": null\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if(pm.response.code===200){pm.collectionVariables.set('convenioId',pm.response.json().id);}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "16. Asociar convenio y proyecto (QA)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/convenios-proyectos",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"convenioId\": \"{{convenioId}}\",\n  \"proyectoId\": \"{{proyectoId}}\",\n  \"tipoVinculo\": null\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "17. Correspondencia recibida",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/correspondencia"
+      }
+    },
+    {
+      "name": "18. Registrar correspondencia (QA)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/correspondencia",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"anio\": 2026,\n  \"fechaRecepcion\": \"2026-11-18\",\n  \"horaDocumento\": \"10:00\",\n  \"fechaDocumento\": \"2026-11-17\",\n  \"origen\": \"Datos de ensayo\",\n  \"tipoDocumento\": \"OFICIO\",\n  \"numeroDocumento\": \"EXT-001\",\n  \"materia\": \"Registro de prueba\",\n  \"responsable\": \"Referente QA\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "19. Correlativos SOLO CONSULTA",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/correlativos"
+      }
+    },
+    {
+      "name": "20. CRC SOLO CONSULTA",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/crc"
+      }
+    },
+    {
+      "name": "21. Instrumentos orgánicos SOLO CONSULTA",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/instrumentos-organicos"
+      }
+    },
+    {
+      "name": "22. Auditoría (admin)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/auditoria?page=0&size=20"
+      }
+    },
+    {
+      "name": "23. Usuarios (admin)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/admin/usuarios"
+      }
+    }
+  ]
+}

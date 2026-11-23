@@ -1,0 +1,5780 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "RRFF-SSM — Module 7.2 Gantt API (proposed contract R05)",
+    "version": "0.4.0",
+    "description": "Propuesta R05; snake_case PostgreSQL/CSV, camelCase JSON DTO, mismo ID lógico. No implica backend activo."
+  },
+  "servers": [
+    {
+      "url": "/api/v1/rrff"
+    }
+  ],
+  "tags": [
+    {
+      "name": "proyectos"
+    },
+    {
+      "name": "cronogramas"
+    },
+    {
+      "name": "tareas-gantt"
+    },
+    {
+      "name": "personas"
+    },
+    {
+      "name": "usuarios"
+    },
+    {
+      "name": "perfiles"
+    },
+    {
+      "name": "usuario-perfil"
+    },
+    {
+      "name": "proy-persona"
+    },
+    {
+      "name": "tarea-personas"
+    },
+    {
+      "name": "tarea-actores"
+    },
+    {
+      "name": "estados"
+    },
+    {
+      "name": "etapas"
+    },
+    {
+      "name": "establecimientos"
+    },
+    {
+      "name": "tipos-establec"
+    },
+    {
+      "name": "financiamiento"
+    },
+    {
+      "name": "verificadores"
+    },
+    {
+      "name": "dependencias"
+    },
+    {
+      "name": "hitos"
+    },
+    {
+      "name": "actualizaciones"
+    },
+    {
+      "name": "documentos"
+    },
+    {
+      "name": "fotos"
+    },
+    {
+      "name": "items-montos"
+    },
+    {
+      "name": "movimientos"
+    },
+    {
+      "name": "actores-origen"
+    },
+    {
+      "name": "funciones"
+    }
+  ],
+  "paths": {
+    "/projects": {
+      "get": {
+        "tags": [
+          "proyectos"
+        ],
+        "summary": "Listar PROYECTOS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffProjects"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "proyectos"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffProjects"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/projects/{id}": {
+      "get": {
+        "tags": [
+          "proyectos"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffProjects"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "proyectos"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffProjects"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/schedules": {
+      "get": {
+        "tags": [
+          "cronogramas"
+        ],
+        "summary": "Listar CRONOGRAMAS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffSchedules"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "cronogramas"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffSchedules"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/schedules/{id}": {
+      "get": {
+        "tags": [
+          "cronogramas"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffSchedules"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "cronogramas"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffSchedules"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/schedule-tasks": {
+      "get": {
+        "tags": [
+          "tareas-gantt"
+        ],
+        "summary": "Listar TAREAS_GANTT con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffScheduleTasks"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tareas-gantt"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffScheduleTasks"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/schedule-tasks/{id}": {
+      "get": {
+        "tags": [
+          "tareas-gantt"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffScheduleTasks"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "tareas-gantt"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffScheduleTasks"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/persons": {
+      "get": {
+        "tags": [
+          "personas"
+        ],
+        "summary": "Listar PERSONAS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffPersons"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "personas"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffPersons"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/persons/{id}": {
+      "get": {
+        "tags": [
+          "personas"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffPersons"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "personas"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffPersons"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "usuarios"
+        ],
+        "summary": "Listar USUARIOS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffUsers"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "usuarios"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffUsers"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "usuarios"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffUsers"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "usuarios"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffUsers"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/profiles": {
+      "get": {
+        "tags": [
+          "perfiles"
+        ],
+        "summary": "Listar PERFILES con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffProfiles"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "perfiles"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffProfiles"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/profiles/{id}": {
+      "get": {
+        "tags": [
+          "perfiles"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffProfiles"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "perfiles"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffProfiles"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/user-profiles": {
+      "get": {
+        "tags": [
+          "usuario-perfil"
+        ],
+        "summary": "Listar USUARIO_PERFIL con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffUserProfiles"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "usuario-perfil"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffUserProfiles"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/user-profiles/{id}": {
+      "get": {
+        "tags": [
+          "usuario-perfil"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffUserProfiles"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "usuario-perfil"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffUserProfiles"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/project-people": {
+      "get": {
+        "tags": [
+          "proy-persona"
+        ],
+        "summary": "Listar PROY_PERSONA con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffProjectPeople"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "proy-persona"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffProjectPeople"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/project-people/{id}": {
+      "get": {
+        "tags": [
+          "proy-persona"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffProjectPeople"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "proy-persona"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffProjectPeople"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/task-people": {
+      "get": {
+        "tags": [
+          "tarea-personas"
+        ],
+        "summary": "Listar TAREA_PERSONAS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffTaskPeople"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tarea-personas"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffTaskPeople"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/task-people/{id}": {
+      "get": {
+        "tags": [
+          "tarea-personas"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffTaskPeople"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "tarea-personas"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffTaskPeople"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/task-actors": {
+      "get": {
+        "tags": [
+          "tarea-actores"
+        ],
+        "summary": "Listar TAREA_ACTORES con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffTaskActors"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tarea-actores"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffTaskActors"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/task-actors/{id}": {
+      "get": {
+        "tags": [
+          "tarea-actores"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffTaskActors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "tarea-actores"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffTaskActors"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/statuses": {
+      "get": {
+        "tags": [
+          "estados"
+        ],
+        "summary": "Listar ESTADOS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffStatuses"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "estados"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffStatuses"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/statuses/{id}": {
+      "get": {
+        "tags": [
+          "estados"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffStatuses"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "estados"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffStatuses"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/stages": {
+      "get": {
+        "tags": [
+          "etapas"
+        ],
+        "summary": "Listar ETAPAS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffStages"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "etapas"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffStages"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/stages/{id}": {
+      "get": {
+        "tags": [
+          "etapas"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffStages"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "etapas"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffStages"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/facilities": {
+      "get": {
+        "tags": [
+          "establecimientos"
+        ],
+        "summary": "Listar ESTABLECIMIENTOS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffFacilities"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "establecimientos"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffFacilities"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/facilities/{id}": {
+      "get": {
+        "tags": [
+          "establecimientos"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffFacilities"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "establecimientos"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffFacilities"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/facility-types": {
+      "get": {
+        "tags": [
+          "tipos-establec"
+        ],
+        "summary": "Listar TIPOS_ESTABLEC con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffFacilityTypes"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tipos-establec"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffFacilityTypes"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/facility-types/{id}": {
+      "get": {
+        "tags": [
+          "tipos-establec"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffFacilityTypes"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "tipos-establec"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffFacilityTypes"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/funding-types": {
+      "get": {
+        "tags": [
+          "financiamiento"
+        ],
+        "summary": "Listar FINANCIAMIENTO con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffFundingTypes"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "financiamiento"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffFundingTypes"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/funding-types/{id}": {
+      "get": {
+        "tags": [
+          "financiamiento"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffFundingTypes"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "financiamiento"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffFundingTypes"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/verifiers": {
+      "get": {
+        "tags": [
+          "verificadores"
+        ],
+        "summary": "Listar VERIFICADORES con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffVerifiers"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "verificadores"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffVerifiers"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/verifiers/{id}": {
+      "get": {
+        "tags": [
+          "verificadores"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffVerifiers"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "verificadores"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffVerifiers"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/task-dependencies": {
+      "get": {
+        "tags": [
+          "dependencias"
+        ],
+        "summary": "Listar DEPENDENCIAS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffTaskDependencies"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "dependencias"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffTaskDependencies"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/task-dependencies/{id}": {
+      "get": {
+        "tags": [
+          "dependencias"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffTaskDependencies"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "dependencias"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffTaskDependencies"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/milestones": {
+      "get": {
+        "tags": [
+          "hitos"
+        ],
+        "summary": "Listar HITOS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffMilestones"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "hitos"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffMilestones"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/milestones/{id}": {
+      "get": {
+        "tags": [
+          "hitos"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffMilestones"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "hitos"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffMilestones"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/task-updates": {
+      "get": {
+        "tags": [
+          "actualizaciones"
+        ],
+        "summary": "Listar ACTUALIZACIONES con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffTaskUpdates"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "actualizaciones"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffTaskUpdates"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/task-updates/{id}": {
+      "get": {
+        "tags": [
+          "actualizaciones"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffTaskUpdates"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "actualizaciones"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffTaskUpdates"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/documents": {
+      "get": {
+        "tags": [
+          "documentos"
+        ],
+        "summary": "Listar DOCUMENTOS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffDocuments"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "documentos"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffDocuments"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/documents/{id}": {
+      "get": {
+        "tags": [
+          "documentos"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffDocuments"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "documentos"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffDocuments"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/photos": {
+      "get": {
+        "tags": [
+          "fotos"
+        ],
+        "summary": "Listar FOTOS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffPhotos"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "fotos"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffPhotos"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/photos/{id}": {
+      "get": {
+        "tags": [
+          "fotos"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffPhotos"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "fotos"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffPhotos"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/budget-items": {
+      "get": {
+        "tags": [
+          "items-montos"
+        ],
+        "summary": "Listar ITEMS_MONTOS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffBudgetItems"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "items-montos"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffBudgetItems"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/budget-items/{id}": {
+      "get": {
+        "tags": [
+          "items-montos"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffBudgetItems"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "items-montos"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffBudgetItems"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/budget-movements": {
+      "get": {
+        "tags": [
+          "movimientos"
+        ],
+        "summary": "Listar MOVIMIENTOS con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffBudgetMovements"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "movimientos"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffBudgetMovements"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/budget-movements/{id}": {
+      "get": {
+        "tags": [
+          "movimientos"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffBudgetMovements"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "movimientos"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffBudgetMovements"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/source-actors": {
+      "get": {
+        "tags": [
+          "actores-origen"
+        ],
+        "summary": "Listar ACTORES_ORIGEN con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffSourceActors"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "actores-origen"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffSourceActors"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/source-actors/{id}": {
+      "get": {
+        "tags": [
+          "actores-origen"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffSourceActors"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "actores-origen"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffSourceActors"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/assignment-roles": {
+      "get": {
+        "tags": [
+          "funciones"
+        ],
+        "summary": "Listar FUNCIONES con filtros y paginación",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listado paginado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RrffAssignmentRoles"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "size": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "funciones"
+        ],
+        "summary": "Crear registro autorizado",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffAssignmentRoles"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "409": {
+            "description": "Conflicto"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/assignment-roles/{id}": {
+      "get": {
+        "tags": [
+          "funciones"
+        ],
+        "summary": "Detalle por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RrffAssignmentRoles"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "funciones"
+        ],
+        "summary": "Actualizar registro",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RrffAssignmentRoles"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Actualizado"
+          },
+          "400": {
+            "description": "Inválido"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "404": {
+            "description": "No existe"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/projects/{projectId}/gantt": {
+      "get": {
+        "summary": "Obtener vista Gantt integrada en una respuesta",
+        "description": "Incluye proyecto, cronograma/version seleccionada, tareas, asignaciones, personas y catálogos; no equivale a invocar 25 endpoints independientes",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scheduleId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Gantt completo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullGantt"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Proyecto o corte no disponible"
+          },
+          "403": {
+            "description": "Sin permiso"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          }
+        }
+      }
+    },
+    "/projects/{projectId}/gantt/{scheduleId}/clone": {
+      "post": {
+        "summary": "Crear nueva versión de planificación sin sobrescribir corte histórico",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scheduleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Versión creada"
+          },
+          "409": {
+            "description": "Conflicto de versión"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      }
+    },
+    "/projects/{projectId}/gantt/{scheduleId}/progress": {
+      "get": {
+        "summary": "Avance reportado y programado sin interpretar signo",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scheduleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado calculado o nulo cuando no haya datos reportados"
+          },
+          "401": {
+            "description": "Autenticación requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "RrffUsers": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
+          "personId": {
+            "type": "string",
+            "nullable": true
+          },
+          "identifierSource": {
+            "type": "string",
+            "nullable": true
+          },
+          "loginActual": {
+            "type": "string",
+            "nullable": true
+          },
+          "active": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "userId"
+        ]
+      },
+      "RrffProfiles": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "profileId": {
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "active": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "required": [
+          "profileId"
+        ]
+      },
+      "RrffUserProfiles": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "userProfileId": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
+          "profileId": {
+            "type": "string",
+            "nullable": true
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "validTo": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        },
+        "required": [
+          "userProfileId"
+        ]
+      },
+      "RrffProjectPeople": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "projectPersonId": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectId": {
+            "type": "string",
+            "nullable": true
+          },
+          "personId": {
+            "type": "string",
+            "nullable": true
+          },
+          "assignmentRoleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "validTo": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "active": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "projectPersonId"
+        ]
+      },
+      "RrffTaskActors": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "relationId": {
+            "type": "string",
+            "nullable": true
+          },
+          "taskId": {
+            "type": "string",
+            "nullable": true
+          },
+          "scheduleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectId": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceResponsibleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "actorId": {
+            "type": "string",
+            "nullable": true
+          },
+          "candidatePersonId": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceAssignmentRole": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceColumn": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "candidateUserId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "relationId"
+        ]
+      },
+      "RrffFacilities": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "facilityId": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "facilityTypeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "communeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "active": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "noteSource": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedByUserId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "facilityId"
+        ]
+      },
+      "RrffFacilityTypes": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "facilityTypeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedByUserId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "facilityTypeId"
+        ]
+      },
+      "RrffFundingTypes": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "fundingId": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "active": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedByUserId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "fundingId"
+        ]
+      },
+      "RrffVerifiers": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "verifierId": {
+            "type": "string",
+            "nullable": true
+          },
+          "verifierType": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedByUserId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "verifierId"
+        ]
+      },
+      "RrffMilestones": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "milestoneId": {
+            "type": "string",
+            "nullable": true
+          },
+          "scheduleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "taskId": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "plannedDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "actualDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "statusId": {
+            "type": "string",
+            "nullable": true
+          },
+          "verifierId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "milestoneId"
+        ]
+      },
+      "RrffTaskUpdates": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "updateId": {
+            "type": "string",
+            "nullable": true
+          },
+          "taskId": {
+            "type": "string",
+            "nullable": true
+          },
+          "cutoffDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "progressPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": [
+          "updateId"
+        ]
+      },
+      "RrffDocuments": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "documentId": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectId": {
+            "type": "string",
+            "nullable": true
+          },
+          "scheduleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "taskId": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "documentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "documentDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "locationRepository": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "documentId"
+        ]
+      },
+      "RrffPhotos": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "photoId": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectId": {
+            "type": "string",
+            "nullable": true
+          },
+          "scheduleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "taskId": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "photoDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationRepository": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "photoId"
+        ]
+      },
+      "RrffBudgetItems": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "budgetItemId": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectId": {
+            "type": "string",
+            "nullable": true
+          },
+          "scheduleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "initialAmount": {
+            "type": "number",
+            "nullable": true
+          },
+          "currentAmount": {
+            "type": "number",
+            "nullable": true
+          },
+          "currencyUnit": {
+            "type": "string",
+            "nullable": true
+          },
+          "referenceDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        },
+        "required": [
+          "budgetItemId"
+        ]
+      },
+      "RrffBudgetMovements": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "budgetMovementId": {
+            "type": "string",
+            "nullable": true
+          },
+          "budgetItemId": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "nullable": true
+          },
+          "movementType": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "budgetMovementId"
+        ]
+      },
+      "RrffSourceActors": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "actorId": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceAlias": {
+            "type": "string",
+            "nullable": true
+          },
+          "provisionalType": {
+            "type": "string",
+            "nullable": true
+          },
+          "candidatePersonId": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "actorId"
+        ]
+      },
+      "RrffAssignmentRoles": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "assignmentRoleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "roleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "assignmentRoleId"
+        ]
+      },
+      "FullGantt": {
+        "type": "object",
+        "properties": {
+          "project": {
+            "$ref": "#/components/schemas/RrffProjects"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/RrffSchedules"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RrffScheduleTasks"
+            }
+          },
+          "taskAssignments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RrffTaskPeople"
+            }
+          },
+          "people": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RrffPersons"
+            }
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RrffStages"
+            }
+          },
+          "statuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RrffStatuses"
+            }
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RrffTaskDependencies"
+            }
+          }
+        }
+      },
+      "RrffProjects": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceBipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceFileId": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectTypeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "facilityId": {
+            "type": "string",
+            "nullable": true
+          },
+          "provinceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "communeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "fundingTypeId": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "active": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedByUserId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "projectId"
+        ]
+      },
+      "RrffSchedules": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "scheduleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectId": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceFileId": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceSheetName": {
+            "type": "string",
+            "nullable": true
+          },
+          "cutoffDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "sourceOverallProgress": {
+            "type": "number",
+            "nullable": true
+          },
+          "headerRow": {
+            "type": "integer",
+            "nullable": true
+          },
+          "activityCount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "statusId": {
+            "type": "string",
+            "nullable": true
+          },
+          "versionPublished": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedByUserId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "scheduleId"
+        ]
+      },
+      "RrffScheduleTasks": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "taskId": {
+            "type": "string",
+            "nullable": true
+          },
+          "scheduleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectId": {
+            "type": "string",
+            "nullable": true
+          },
+          "codeHierarchical": {
+            "type": "string",
+            "nullable": true
+          },
+          "parentCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "recordType": {
+            "type": "string",
+            "nullable": true
+          },
+          "stageId": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceStageText": {
+            "type": "string",
+            "nullable": true
+          },
+          "activityOSubstage": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceVerifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusId": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceResponsibleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceResponsibleText": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "durationDays": {
+            "type": "string",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "sourceRowNumber": {
+            "type": "integer",
+            "nullable": true
+          },
+          "actualProgressPercent": {
+            "type": "number",
+            "nullable": true
+          },
+          "weight": {
+            "type": "number",
+            "nullable": true
+          },
+          "parentTaskId": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdByUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "updatedByUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "verifierId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "taskId"
+        ]
+      },
+      "RrffTaskPeople": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "relationId": {
+            "type": "string",
+            "nullable": true
+          },
+          "taskId": {
+            "type": "string",
+            "nullable": true
+          },
+          "personId": {
+            "type": "string",
+            "nullable": true
+          },
+          "role": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceResponsibleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "validTo": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "relationId"
+        ]
+      },
+      "RrffPersons": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "personId": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "institutionalIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "active": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sourceInitials": {
+            "type": "string",
+            "nullable": true
+          },
+          "actorId": {
+            "type": "string",
+            "nullable": true
+          },
+          "identificationStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedByUserId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "personId"
+        ]
+      },
+      "RrffStages": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "stageId": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedByUserId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "stageId"
+        ]
+      },
+      "RrffStatuses": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "statusId": {
+            "type": "string",
+            "nullable": true
+          },
+          "codeOriginal": {
+            "type": "string",
+            "nullable": true
+          },
+          "pendingDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedByUserId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "statusId"
+        ]
+      },
+      "RrffTaskDependencies": {
+        "type": "object",
+        "description": "Modelo relacional técnico; datos provisionales no conceden permisos de acceso",
+        "properties": {
+          "dependencyId": {
+            "type": "string",
+            "nullable": true
+          },
+          "scheduleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "predecessorTaskId": {
+            "type": "string",
+            "nullable": true
+          },
+          "successorTaskId": {
+            "type": "string",
+            "nullable": true
+          },
+          "dependencyType": {
+            "type": "string",
+            "nullable": true
+          },
+          "lagDays": {
+            "type": "integer",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "dependencyId"
+        ]
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}

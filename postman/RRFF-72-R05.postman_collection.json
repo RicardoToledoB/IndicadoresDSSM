@@ -1,0 +1,138 @@
+{
+  "info": {
+    "name": "RRFF-SSM | Gantt 7.2 R05 integrado",
+    "description": "Postman backend M05+R05; R04 loaded via Flyway. Read permissions by JWT; POST/PUT disabled by default.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8097/api/v1"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "projectId",
+      "value": "PR001"
+    },
+    {
+      "key": "scheduleId",
+      "value": "CR001-01"
+    },
+    {
+      "key": "taskId",
+      "value": "T000001"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "00 Login JWT M05",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"REEMPLAZAR_EN_POSTMAN\"\n}"
+        },
+        "url": "{{baseUrl}}/auth/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const x=pm.response.json();",
+              "if (x.accessToken) pm.collectionVariables.set(\"token\",x.accessToken);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "01 Proyectos R04",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rrff/projects?page=0&size=25"
+      }
+    },
+    {
+      "name": "02 Cronogramas de proyecto",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rrff/schedules?projectId={{projectId}}&page=0&size=100"
+      }
+    },
+    {
+      "name": "03 Gantt completo proyecto/version",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rrff/projects/{{projectId}}/gantt?scheduleId={{scheduleId}}"
+      }
+    },
+    {
+      "name": "04 Avance bruto (sin inferencia)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rrff/projects/{{projectId}}/gantt/{{scheduleId}}/progress"
+      }
+    },
+    {
+      "name": "05 Tareas de corte",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rrff/schedule-tasks?scheduleId={{scheduleId}}&page=0&size=200"
+      }
+    },
+    {
+      "name": "06 Detalle tarea",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rrff/schedule-tasks/{{taskId}}"
+      }
+    },
+    {
+      "name": "07 Clonar versión (requiere autorización de escritura)",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/rrff/projects/{{projectId}}/gantt/{{scheduleId}}/clone"
+      }
+    },
+    {
+      "name": "08 Crear actualización avance (requiere autorización)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/rrff/task-updates",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"updateId\": \"TU-REGISTRO-NUEVO-UNICO\",\n  \"taskId\": \"{{taskId}}\",\n  \"cutoffDate\": \"2026-11-20\",\n  \"progressPercent\": 12.0,\n  \"note\": \"Solo demostración: reemplazar por información validada\"\n}"
+        }
+      }
+    }
+  ]
+}

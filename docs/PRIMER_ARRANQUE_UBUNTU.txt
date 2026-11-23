@@ -1,0 +1,7 @@
+RRFF-SSM 7.2 | GUIA ACTUALIZADA (23-11-2026)
+
+Seguir docs/INSTALAR_UBUNTU_MYSQL_SWAGGER.md
+El SQL de creacion se encuentra en scripts/01_CREAR_BD_Y_USUARIO.sql
+Credenciales privadas: ACCESO_INICIAL.txt
+No usar la antigua clave literal TU_CLAVE_SEGURA_MYSQL.
+No ejecutar SQL de PostgreSQL R05 contra MySQL.

@@ -1,0 +1,11 @@
+target/
+.idea/
+.vscode/
+*.iml
+*.log
+.env
+application-local.properties
+
+# Credenciales privadas agregadas para pruebas (NO publicar)
+src/main/resources/application.properties
+ACCESO_INICIAL.txt

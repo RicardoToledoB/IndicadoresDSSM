@@ -1,0 +1,1207 @@
+[
+  {
+    "slug": "projects",
+    "table": "r72_projects",
+    "id": "project_id",
+    "columns": [
+      {
+        "db": "project_id",
+        "json": "projectId",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_name",
+        "json": "sourceName",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_bip_code",
+        "json": "sourceBipCode",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_file_id",
+        "json": "sourceFileId",
+        "type": "TEXT"
+      },
+      {
+        "db": "project_type_id",
+        "json": "projectTypeId",
+        "type": "TEXT"
+      },
+      {
+        "db": "facility_id",
+        "json": "facilityId",
+        "type": "TEXT"
+      },
+      {
+        "db": "province_id",
+        "json": "provinceId",
+        "type": "TEXT"
+      },
+      {
+        "db": "commune_id",
+        "json": "communeId",
+        "type": "TEXT"
+      },
+      {
+        "db": "funding_type_id",
+        "json": "fundingTypeId",
+        "type": "TEXT"
+      },
+      {
+        "db": "notes",
+        "json": "notes",
+        "type": "TEXT"
+      },
+      {
+        "db": "active",
+        "json": "active",
+        "type": "BOOLEAN"
+      },
+      {
+        "db": "created_at",
+        "json": "createdAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_at",
+        "json": "updatedAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_by_user_id",
+        "json": "updatedByUserId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "schedules",
+    "table": "r72_schedules",
+    "id": "schedule_id",
+    "columns": [
+      {
+        "db": "schedule_id",
+        "json": "scheduleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "project_id",
+        "json": "projectId",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_file_id",
+        "json": "sourceFileId",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_sheet_name",
+        "json": "sourceSheetName",
+        "type": "TEXT"
+      },
+      {
+        "db": "cutoff_date",
+        "json": "cutoffDate",
+        "type": "DATE"
+      },
+      {
+        "db": "source_overall_progress",
+        "json": "sourceOverallProgress",
+        "type": "NUMERIC(18,6)"
+      },
+      {
+        "db": "header_row",
+        "json": "headerRow",
+        "type": "INTEGER"
+      },
+      {
+        "db": "activity_count",
+        "json": "activityCount",
+        "type": "INTEGER"
+      },
+      {
+        "db": "status_id",
+        "json": "statusId",
+        "type": "TEXT"
+      },
+      {
+        "db": "version_published",
+        "json": "versionPublished",
+        "type": "BOOLEAN"
+      },
+      {
+        "db": "created_at",
+        "json": "createdAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_at",
+        "json": "updatedAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_by_user_id",
+        "json": "updatedByUserId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "schedule-tasks",
+    "table": "r72_schedule_tasks",
+    "id": "task_id",
+    "columns": [
+      {
+        "db": "task_id",
+        "json": "taskId",
+        "type": "TEXT"
+      },
+      {
+        "db": "schedule_id",
+        "json": "scheduleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "project_id",
+        "json": "projectId",
+        "type": "TEXT"
+      },
+      {
+        "db": "code_hierarchical",
+        "json": "codeHierarchical",
+        "type": "TEXT"
+      },
+      {
+        "db": "parent_code",
+        "json": "parentCode",
+        "type": "TEXT"
+      },
+      {
+        "db": "record_type",
+        "json": "recordType",
+        "type": "TEXT"
+      },
+      {
+        "db": "stage_id",
+        "json": "stageId",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_stage_text",
+        "json": "sourceStageText",
+        "type": "TEXT"
+      },
+      {
+        "db": "activity_o_substage",
+        "json": "activityOSubstage",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_verifier",
+        "json": "sourceVerifier",
+        "type": "TEXT"
+      },
+      {
+        "db": "status_id",
+        "json": "statusId",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_status",
+        "json": "sourceStatus",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_responsible_id",
+        "json": "sourceResponsibleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_responsible_text",
+        "json": "sourceResponsibleText",
+        "type": "TEXT"
+      },
+      {
+        "db": "start_date",
+        "json": "startDate",
+        "type": "DATE"
+      },
+      {
+        "db": "duration_days",
+        "json": "durationDays",
+        "type": "TEXT"
+      },
+      {
+        "db": "end_date",
+        "json": "endDate",
+        "type": "DATE"
+      },
+      {
+        "db": "source_row_number",
+        "json": "sourceRowNumber",
+        "type": "INTEGER"
+      },
+      {
+        "db": "actual_progress_percent",
+        "json": "actualProgressPercent",
+        "type": "NUMERIC(18,6)"
+      },
+      {
+        "db": "weight",
+        "json": "weight",
+        "type": "NUMERIC(18,6)"
+      },
+      {
+        "db": "parent_task_id",
+        "json": "parentTaskId",
+        "type": "TEXT"
+      },
+      {
+        "db": "created_by_user_id",
+        "json": "createdByUserId",
+        "type": "TEXT"
+      },
+      {
+        "db": "updated_by_user_id",
+        "json": "updatedByUserId",
+        "type": "TEXT"
+      },
+      {
+        "db": "verifier_id",
+        "json": "verifierId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "persons",
+    "table": "r72_persons",
+    "id": "person_id",
+    "columns": [
+      {
+        "db": "person_id",
+        "json": "personId",
+        "type": "TEXT"
+      },
+      {
+        "db": "full_name",
+        "json": "fullName",
+        "type": "TEXT"
+      },
+      {
+        "db": "institutional_identifier",
+        "json": "institutionalIdentifier",
+        "type": "TEXT"
+      },
+      {
+        "db": "email",
+        "json": "email",
+        "type": "TEXT"
+      },
+      {
+        "db": "active",
+        "json": "active",
+        "type": "BOOLEAN"
+      },
+      {
+        "db": "source_initials",
+        "json": "sourceInitials",
+        "type": "TEXT"
+      },
+      {
+        "db": "actor_id",
+        "json": "actorId",
+        "type": "TEXT"
+      },
+      {
+        "db": "identification_status",
+        "json": "identificationStatus",
+        "type": "TEXT"
+      },
+      {
+        "db": "note",
+        "json": "note",
+        "type": "TEXT"
+      },
+      {
+        "db": "created_at",
+        "json": "createdAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_at",
+        "json": "updatedAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_by_user_id",
+        "json": "updatedByUserId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "users",
+    "table": "r72_users",
+    "id": "user_id",
+    "columns": [
+      {
+        "db": "user_id",
+        "json": "userId",
+        "type": "TEXT"
+      },
+      {
+        "db": "person_id",
+        "json": "personId",
+        "type": "TEXT"
+      },
+      {
+        "db": "identifier_source",
+        "json": "identifierSource",
+        "type": "TEXT"
+      },
+      {
+        "db": "login_actual",
+        "json": "loginActual",
+        "type": "TEXT"
+      },
+      {
+        "db": "active",
+        "json": "active",
+        "type": "BOOLEAN"
+      },
+      {
+        "db": "status",
+        "json": "status",
+        "type": "TEXT"
+      },
+      {
+        "db": "note",
+        "json": "note",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "profiles",
+    "table": "r72_profiles",
+    "id": "profile_id",
+    "columns": [
+      {
+        "db": "profile_id",
+        "json": "profileId",
+        "type": "TEXT"
+      },
+      {
+        "db": "code",
+        "json": "code",
+        "type": "TEXT"
+      },
+      {
+        "db": "description",
+        "json": "description",
+        "type": "TEXT"
+      },
+      {
+        "db": "active",
+        "json": "active",
+        "type": "BOOLEAN"
+      }
+    ]
+  },
+  {
+    "slug": "user-profiles",
+    "table": "r72_user_profiles",
+    "id": "user_profile_id",
+    "columns": [
+      {
+        "db": "user_profile_id",
+        "json": "userProfileId",
+        "type": "TEXT"
+      },
+      {
+        "db": "user_id",
+        "json": "userId",
+        "type": "TEXT"
+      },
+      {
+        "db": "profile_id",
+        "json": "profileId",
+        "type": "TEXT"
+      },
+      {
+        "db": "valid_from",
+        "json": "validFrom",
+        "type": "DATE"
+      },
+      {
+        "db": "valid_to",
+        "json": "validTo",
+        "type": "DATE"
+      }
+    ]
+  },
+  {
+    "slug": "project-people",
+    "table": "r72_project_people",
+    "id": "project_person_id",
+    "columns": [
+      {
+        "db": "project_person_id",
+        "json": "projectPersonId",
+        "type": "TEXT"
+      },
+      {
+        "db": "project_id",
+        "json": "projectId",
+        "type": "TEXT"
+      },
+      {
+        "db": "person_id",
+        "json": "personId",
+        "type": "TEXT"
+      },
+      {
+        "db": "assignment_role_id",
+        "json": "assignmentRoleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "valid_from",
+        "json": "validFrom",
+        "type": "DATE"
+      },
+      {
+        "db": "valid_to",
+        "json": "validTo",
+        "type": "DATE"
+      },
+      {
+        "db": "active",
+        "json": "active",
+        "type": "BOOLEAN"
+      },
+      {
+        "db": "user_id",
+        "json": "userId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "task-people",
+    "table": "r72_task_people",
+    "id": "relation_id",
+    "columns": [
+      {
+        "db": "relation_id",
+        "json": "relationId",
+        "type": "TEXT"
+      },
+      {
+        "db": "task_id",
+        "json": "taskId",
+        "type": "TEXT"
+      },
+      {
+        "db": "person_id",
+        "json": "personId",
+        "type": "TEXT"
+      },
+      {
+        "db": "role",
+        "json": "role",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_responsible_id",
+        "json": "sourceResponsibleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "valid_from",
+        "json": "validFrom",
+        "type": "DATE"
+      },
+      {
+        "db": "valid_to",
+        "json": "validTo",
+        "type": "DATE"
+      },
+      {
+        "db": "user_id",
+        "json": "userId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "task-actors",
+    "table": "r72_task_actors",
+    "id": "relation_id",
+    "columns": [
+      {
+        "db": "relation_id",
+        "json": "relationId",
+        "type": "TEXT"
+      },
+      {
+        "db": "task_id",
+        "json": "taskId",
+        "type": "TEXT"
+      },
+      {
+        "db": "schedule_id",
+        "json": "scheduleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "project_id",
+        "json": "projectId",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_responsible_id",
+        "json": "sourceResponsibleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "actor_id",
+        "json": "actorId",
+        "type": "TEXT"
+      },
+      {
+        "db": "candidate_person_id",
+        "json": "candidatePersonId",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_assignment_role",
+        "json": "sourceAssignmentRole",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_column",
+        "json": "sourceColumn",
+        "type": "TEXT"
+      },
+      {
+        "db": "notes",
+        "json": "notes",
+        "type": "TEXT"
+      },
+      {
+        "db": "candidate_user_id",
+        "json": "candidateUserId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "statuses",
+    "table": "r72_statuses",
+    "id": "status_id",
+    "columns": [
+      {
+        "db": "status_id",
+        "json": "statusId",
+        "type": "TEXT"
+      },
+      {
+        "db": "code_original",
+        "json": "codeOriginal",
+        "type": "TEXT"
+      },
+      {
+        "db": "pending_description",
+        "json": "pendingDescription",
+        "type": "TEXT"
+      },
+      {
+        "db": "created_at",
+        "json": "createdAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_at",
+        "json": "updatedAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_by_user_id",
+        "json": "updatedByUserId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "stages",
+    "table": "r72_stages",
+    "id": "stage_id",
+    "columns": [
+      {
+        "db": "stage_id",
+        "json": "stageId",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_name",
+        "json": "sourceName",
+        "type": "TEXT"
+      },
+      {
+        "db": "description",
+        "json": "description",
+        "type": "TEXT"
+      },
+      {
+        "db": "created_at",
+        "json": "createdAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_at",
+        "json": "updatedAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_by_user_id",
+        "json": "updatedByUserId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "facilities",
+    "table": "r72_facilities",
+    "id": "facility_id",
+    "columns": [
+      {
+        "db": "facility_id",
+        "json": "facilityId",
+        "type": "TEXT"
+      },
+      {
+        "db": "name",
+        "json": "name",
+        "type": "TEXT"
+      },
+      {
+        "db": "facility_type_id",
+        "json": "facilityTypeId",
+        "type": "TEXT"
+      },
+      {
+        "db": "commune_id",
+        "json": "communeId",
+        "type": "TEXT"
+      },
+      {
+        "db": "active",
+        "json": "active",
+        "type": "BOOLEAN"
+      },
+      {
+        "db": "note_source",
+        "json": "noteSource",
+        "type": "TEXT"
+      },
+      {
+        "db": "created_at",
+        "json": "createdAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_at",
+        "json": "updatedAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_by_user_id",
+        "json": "updatedByUserId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "facility-types",
+    "table": "r72_facility_types",
+    "id": "facility_type_id",
+    "columns": [
+      {
+        "db": "facility_type_id",
+        "json": "facilityTypeId",
+        "type": "TEXT"
+      },
+      {
+        "db": "code",
+        "json": "code",
+        "type": "TEXT"
+      },
+      {
+        "db": "description",
+        "json": "description",
+        "type": "TEXT"
+      },
+      {
+        "db": "created_at",
+        "json": "createdAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_at",
+        "json": "updatedAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_by_user_id",
+        "json": "updatedByUserId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "funding-types",
+    "table": "r72_funding_types",
+    "id": "funding_id",
+    "columns": [
+      {
+        "db": "funding_id",
+        "json": "fundingId",
+        "type": "TEXT"
+      },
+      {
+        "db": "description",
+        "json": "description",
+        "type": "TEXT"
+      },
+      {
+        "db": "active",
+        "json": "active",
+        "type": "BOOLEAN"
+      },
+      {
+        "db": "created_at",
+        "json": "createdAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_at",
+        "json": "updatedAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_by_user_id",
+        "json": "updatedByUserId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "verifiers",
+    "table": "r72_verifiers",
+    "id": "verifier_id",
+    "columns": [
+      {
+        "db": "verifier_id",
+        "json": "verifierId",
+        "type": "TEXT"
+      },
+      {
+        "db": "verifier_type",
+        "json": "verifierType",
+        "type": "TEXT"
+      },
+      {
+        "db": "description",
+        "json": "description",
+        "type": "TEXT"
+      },
+      {
+        "db": "created_at",
+        "json": "createdAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_at",
+        "json": "updatedAt",
+        "type": "TIMESTAMPTZ"
+      },
+      {
+        "db": "updated_by_user_id",
+        "json": "updatedByUserId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "task-dependencies",
+    "table": "r72_task_dependencies",
+    "id": "dependency_id",
+    "columns": [
+      {
+        "db": "dependency_id",
+        "json": "dependencyId",
+        "type": "TEXT"
+      },
+      {
+        "db": "schedule_id",
+        "json": "scheduleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "predecessor_task_id",
+        "json": "predecessorTaskId",
+        "type": "TEXT"
+      },
+      {
+        "db": "successor_task_id",
+        "json": "successorTaskId",
+        "type": "TEXT"
+      },
+      {
+        "db": "dependency_type",
+        "json": "dependencyType",
+        "type": "TEXT"
+      },
+      {
+        "db": "lag_days",
+        "json": "lagDays",
+        "type": "INTEGER"
+      },
+      {
+        "db": "note",
+        "json": "note",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "milestones",
+    "table": "r72_milestones",
+    "id": "milestone_id",
+    "columns": [
+      {
+        "db": "milestone_id",
+        "json": "milestoneId",
+        "type": "TEXT"
+      },
+      {
+        "db": "schedule_id",
+        "json": "scheduleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "task_id",
+        "json": "taskId",
+        "type": "TEXT"
+      },
+      {
+        "db": "name",
+        "json": "name",
+        "type": "TEXT"
+      },
+      {
+        "db": "planned_date",
+        "json": "plannedDate",
+        "type": "DATE"
+      },
+      {
+        "db": "actual_date",
+        "json": "actualDate",
+        "type": "DATE"
+      },
+      {
+        "db": "status_id",
+        "json": "statusId",
+        "type": "TEXT"
+      },
+      {
+        "db": "verifier_id",
+        "json": "verifierId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "task-updates",
+    "table": "r72_task_updates",
+    "id": "update_id",
+    "columns": [
+      {
+        "db": "update_id",
+        "json": "updateId",
+        "type": "TEXT"
+      },
+      {
+        "db": "task_id",
+        "json": "taskId",
+        "type": "TEXT"
+      },
+      {
+        "db": "cutoff_date",
+        "json": "cutoffDate",
+        "type": "DATE"
+      },
+      {
+        "db": "progress_percent",
+        "json": "progressPercent",
+        "type": "NUMERIC(18,6)"
+      },
+      {
+        "db": "note",
+        "json": "note",
+        "type": "TEXT"
+      },
+      {
+        "db": "user_id",
+        "json": "userId",
+        "type": "TEXT"
+      },
+      {
+        "db": "recorded_at",
+        "json": "recordedAt",
+        "type": "TIMESTAMPTZ"
+      }
+    ]
+  },
+  {
+    "slug": "documents",
+    "table": "r72_documents",
+    "id": "document_id",
+    "columns": [
+      {
+        "db": "document_id",
+        "json": "documentId",
+        "type": "TEXT"
+      },
+      {
+        "db": "project_id",
+        "json": "projectId",
+        "type": "TEXT"
+      },
+      {
+        "db": "schedule_id",
+        "json": "scheduleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "task_id",
+        "json": "taskId",
+        "type": "TEXT"
+      },
+      {
+        "db": "file_name",
+        "json": "fileName",
+        "type": "TEXT"
+      },
+      {
+        "db": "document_type",
+        "json": "documentType",
+        "type": "TEXT"
+      },
+      {
+        "db": "document_date",
+        "json": "documentDate",
+        "type": "DATE"
+      },
+      {
+        "db": "location_repository",
+        "json": "locationRepository",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "photos",
+    "table": "r72_photos",
+    "id": "photo_id",
+    "columns": [
+      {
+        "db": "photo_id",
+        "json": "photoId",
+        "type": "TEXT"
+      },
+      {
+        "db": "project_id",
+        "json": "projectId",
+        "type": "TEXT"
+      },
+      {
+        "db": "schedule_id",
+        "json": "scheduleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "task_id",
+        "json": "taskId",
+        "type": "TEXT"
+      },
+      {
+        "db": "file_name",
+        "json": "fileName",
+        "type": "TEXT"
+      },
+      {
+        "db": "photo_date",
+        "json": "photoDate",
+        "type": "DATE"
+      },
+      {
+        "db": "description",
+        "json": "description",
+        "type": "TEXT"
+      },
+      {
+        "db": "location_repository",
+        "json": "locationRepository",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "budget-items",
+    "table": "r72_budget_items",
+    "id": "budget_item_id",
+    "columns": [
+      {
+        "db": "budget_item_id",
+        "json": "budgetItemId",
+        "type": "TEXT"
+      },
+      {
+        "db": "project_id",
+        "json": "projectId",
+        "type": "TEXT"
+      },
+      {
+        "db": "schedule_id",
+        "json": "scheduleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "description",
+        "json": "description",
+        "type": "TEXT"
+      },
+      {
+        "db": "initial_amount",
+        "json": "initialAmount",
+        "type": "NUMERIC(18,6)"
+      },
+      {
+        "db": "current_amount",
+        "json": "currentAmount",
+        "type": "NUMERIC(18,6)"
+      },
+      {
+        "db": "currency_unit",
+        "json": "currencyUnit",
+        "type": "TEXT"
+      },
+      {
+        "db": "reference_date",
+        "json": "referenceDate",
+        "type": "DATE"
+      }
+    ]
+  },
+  {
+    "slug": "budget-movements",
+    "table": "r72_budget_movements",
+    "id": "budget_movement_id",
+    "columns": [
+      {
+        "db": "budget_movement_id",
+        "json": "budgetMovementId",
+        "type": "TEXT"
+      },
+      {
+        "db": "budget_item_id",
+        "json": "budgetItemId",
+        "type": "TEXT"
+      },
+      {
+        "db": "date",
+        "json": "date",
+        "type": "DATE"
+      },
+      {
+        "db": "amount",
+        "json": "amount",
+        "type": "NUMERIC(18,6)"
+      },
+      {
+        "db": "movement_type",
+        "json": "movementType",
+        "type": "TEXT"
+      },
+      {
+        "db": "note",
+        "json": "note",
+        "type": "TEXT"
+      },
+      {
+        "db": "user_id",
+        "json": "userId",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "source-actors",
+    "table": "r72_source_actors",
+    "id": "actor_id",
+    "columns": [
+      {
+        "db": "actor_id",
+        "json": "actorId",
+        "type": "TEXT"
+      },
+      {
+        "db": "source_alias",
+        "json": "sourceAlias",
+        "type": "TEXT"
+      },
+      {
+        "db": "provisional_type",
+        "json": "provisionalType",
+        "type": "TEXT"
+      },
+      {
+        "db": "candidate_person_id",
+        "json": "candidatePersonId",
+        "type": "TEXT"
+      },
+      {
+        "db": "note",
+        "json": "note",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "slug": "assignment-roles",
+    "table": "r72_assignment_roles",
+    "id": "assignment_role_id",
+    "columns": [
+      {
+        "db": "assignment_role_id",
+        "json": "assignmentRoleId",
+        "type": "TEXT"
+      },
+      {
+        "db": "role_name",
+        "json": "roleName",
+        "type": "TEXT"
+      },
+      {
+        "db": "description",
+        "json": "description",
+        "type": "TEXT"
+      }
+    ]
+  }
+]
